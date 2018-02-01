@@ -1,0 +1,26 @@
+<style lang="scss">
+
+</style>
+<template>
+     <slot name="radios"></slot>
+</template>
+
+<script >
+import wepy from 'wepy'
+import Radio from '@/components/radio'
+export default class radioGroup extends wepy.component {
+  props={
+    value:{},
+    questionIndex:{
+      type:Number,
+      default:0
+    }
+  }
+  events={
+    'change':(item,index)=>{
+      this.$emit('next',item,index)
+    }
+  }
+}
+</script>
+

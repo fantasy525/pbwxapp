@@ -1,0 +1,190 @@
+<template>
+  <view>
+    <view class="banner">
+      <swiper indicator-dots="{{indicatorDots}}" indicator-active-color="#fff">
+        <block
+          wx:for="{{banner}}">
+          <swiper-item>
+            <image class="banner__img" src="{{ item.src}}"></image>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="list">
+      <view class="list__item" wx:for="{{list}}">
+        <navigator url="/pages/emotion?from={{item.source}}" open-type="navigate">
+          <image class="list__item__img" src="{{item.imgSrc}}"/>
+          <view>
+            <text class="list__item__title">{{item.testText}}</text>
+          </view>
+        </navigator>
+
+      </view>
+
+    </view>
+    <view class="information">
+      <view class="info__header">
+        <text class="info__header__leftBar"></text>
+        <text class="info__header__title">行业资讯</text>
+        <navigator url="" class="more" open-type="switchtab" hover-class="className">更多</navigator>
+      </view>
+      <view class="info__content">
+        <view class="info__con__item">
+          <navigator url="infoDetail?id=1" open-type="navigate">
+            <view class="info__item__title">行业资讯</view>
+            <view class="info__item__indro">行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯</view>
+          </navigator>
+        </view>
+        <view class="info__con__item">
+          <navigator url="infoDetail?id=1" open-type="navigate" class="test__navigator">
+            <view class="info__item__title">行业资讯</view>
+            <view class="info__item__indro">行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯</view>
+            <view></view>
+          </navigator>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="scss">
+  .banner__img {
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 29rpx 36rpx;
+  .list__item {
+    width: 25%;
+    margin-top: 36rpx;
+    text-align: center;
+    .list__item__img {
+      width: 83rpx;
+      height: 83rpx;
+    }
+    .list__item__title {
+      font-size: 24rpx;
+    }
+  }
+}
+
+.information {
+  .info__header {
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+    height: 100rpx;
+    line-height: 92rpx;
+    font-size: 30rpx;
+    color: #000;
+    .more {
+      float: right;
+      display: inline-block;
+      margin-right: 23rpx;
+      color: #333;
+      font-size: 32rpx;
+    }
+    .info__header__title {
+      margin-left: 21rpx;
+    }
+    .info__header__leftBar {
+      display: inline-block;
+      width: 11rpx;
+      height: 70rpx;
+      background-color: #2888c6;
+      vertical-align: middle;
+      margin-left: 21rpx;
+    }
+  }
+  .info__content {
+    padding: 0 21rpx;
+    .info__item__title {
+      font-size: 32rpx;
+      color: #333;
+    }
+    .info__con__item {
+      padding: 30rpx 0rpx 30rpx;
+      border-bottom: 1px dotted #e1e1e1;
+    }
+    .info__con__item:last-child {
+      border-bottom: none;
+    }
+    .info__item__indro {
+      margin-top: 15rpx;
+      font-size: 30rpx;
+      color: #969696;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+  .test__navigator{
+    height:100%;
+  }
+</style>
+<script>
+  import wepy from "wepy";
+  export default class Home extends wepy.page {
+    data = {
+      userInfo: {},
+      indicatorDots: true,
+      banner: [
+        {
+          src: "/assets/banner1.png"
+        },
+        {
+          src: "/assets/banner2.png"
+        }
+      ],
+      list: [
+        {
+          source:'emotion',
+          testText: '情绪测评',
+          imgSrc: '../assets/1.png'
+        },
+        {
+          source:'emotion',
+          testText: '情绪测评',
+          imgSrc: '../assets/2.png'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/3.png',
+          testText: '情绪测评'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/4.png',
+          testText: '情绪测评'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/5.png',
+          testText: '情绪测评'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/6.png',
+          testText: '情绪测评'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/7.png',
+          testText: '情绪测评'
+        },
+        {
+          source:'emotion',
+          imgSrc: '../assets/8.png',
+          testText: '情绪测评'
+        }
+      ]
+    };
+
+    onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+    }
+  }</script>
+
+

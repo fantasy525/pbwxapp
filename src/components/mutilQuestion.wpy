@@ -1,0 +1,54 @@
+<style lang="scss">
+
+</style>
+<template>
+  <view class="test__title">
+    {{questions[questionIndex].title}}2222
+  </view>
+  <block wx:for="{subQuestions}}">
+    <view class="test__title">
+      {{item.title}}
+    </view>
+    <view class="test__options" >
+      <repeat
+        for="{{item.options}}"
+        key="index2"
+        index="index2"
+        item="item2"
+      >
+        <radio
+          :questionIndex.sync="index"
+          :item.sync="item2"
+          :radioValue.sync="index2"
+          :answer.sync="answers[]"
+          :index.sync="index2"
+        >
+        </radio>
+      </repeat>
+    </view>
+  </block>
+</template>
+
+<script >
+import wepy from 'wepy'
+import Radio from '@/components/radio'
+export default class mutilQuestion extends wepy.component{
+  props={
+    questions:{
+      type:Array,
+      default:[]
+    },
+    answers:{
+      type:Array,
+      default:[],
+      twoWay:true
+    },
+    subQuestions:{
+      type:Array,
+      default:[]
+    }
+
+  }
+}
+</script>
+

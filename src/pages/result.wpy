@@ -1,0 +1,765 @@
+<style lang="scss">
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 453rpx;
+    background: url('../assets/cloud.jpg') center center no-repeat;
+    background-size: 100% 100%;
+    font-size: 30rpx;
+    color: #fff;
+    .title__content {
+      font-size: 50rpx;
+      font-weight: bold;
+    }
+
+  }
+
+  .result__item {
+    padding: 0 30rpx;
+  }
+
+  .result__item__h2 {
+    font-size: 36rpx;
+    color: #4bc6ff;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #ceced4;
+    padding-bottom: 44rpx;
+  }
+
+  .result__item__text {
+    padding-top: 52rpx;
+    font-size: 30rpx;
+    line-height: 50rpx;
+    color: #666;
+    min-height: 360rpx;
+    margin-bottom: 110rpx;
+  }
+  .per {
+    font-size: 30rpx; /*rpx*/
+    color: #4bc6ff;
+    text-align: right;
+  }
+
+  .per-ti {
+
+    padding-top: 40rpx;
+  }
+
+  .me-lst-li {
+    margin-top: 37rpx;
+  }
+
+  .me-lst-li p {
+    color: #999;
+    font-size: 30rpx; /*rpx*/
+    overflow: hidden;
+    & .per {
+      float: right;
+    }
+  }
+
+  .bar-in {
+    display: inline-block;
+    width: 0%;
+    height: 100%;
+    background-color: #4bc6ff;
+    border-radius: 19rpx;
+    font-size: 20rpx;
+  }
+
+  .bar-out {
+    display:flex;
+    height: 19rpx;
+    background-color: #f9f9f9;
+    -webkit-border-radius: 100rpx;
+    margin-bottom: 21rpx;
+  }
+  .user-num {
+    margin-top: 188rpx;
+    font-size: 30rpx; /*px*/
+    color: #999;
+    text-align: center;
+    line-height: 43rpx;
+    & text {
+      font-size: 43rpx; /*px*/
+
+    }
+  }
+  .user__num--blue{
+    color:#4bc6ff;
+  }
+  .code{
+    display:flex;
+    height:550rpx;
+    justify-content:center;
+    align-items: center;
+    .code-img{
+      width:300rpx;
+      height:300rpx;
+    }
+  }
+  .retest{
+    color:#4bc6ff;
+    font-size:40rpx;
+    float:right;
+    padding-right:30rpx;
+
+  }
+  .retest-wrap{
+    overflow:hidden;
+  }
+  .footer__button{
+    vertical-align: middle;
+    width:66rpx;
+    height:60rpx;
+    border:1px solid #b8ecff;
+    color:#4bc6ff;
+    background-color:#fff;
+    &::after{
+      content:null;
+      width:0;
+      height:0;
+    }
+  }
+  .footer{
+    display:flex;
+    justify-content: space-between;
+    padding:0 30rpx 40rpx 30rpx;
+    margin-top:20rpx;
+    .footer__button:nth-of-type(2){
+      margin-left:30rpx;
+    }
+    .footer__info{
+
+      color:#999;
+    }
+    .isHelp{
+      background-color: #4bc6ff;
+      color: #fff;
+    }
+  }
+  .noImprove{
+    text-align:center;
+  }
+  .noImprove__text{
+    font-size:42rpx;
+    line-height:30rpx;
+    color:#666;
+
+  }
+  .noImprove__img{
+    width:300rpx;
+    height:260rpx;
+  }
+
+</style>
+<template>
+  <view>
+    <view class="header">
+      <view class="title__prefix">
+        {{title}}
+      </view>
+      <view class="title__content">
+        {{titleResult}}
+      </view>
+    </view>
+    <view class="result__item">
+      <view class="result__item__h2">
+        专家说法
+      </view>
+      <view class="result__item__text">
+        {{suggests}}
+      </view>
+    </view>
+    <view class="result__item">
+      <view class="result__item__h2">
+        如何改善
+      </view>
+      <view class="result__item__text">
+       <view wx:if="{improve.length>0}}">
+          <view wx:if="{{showImprove}}">
+            <view class="per per-ti">
+              有效性
+            </view>
+            <view class="me-lst">
+              <view class="me-lst-li" wx:for="{{improve}}">
+                <view class="bar bar-out"><text class="bar bar-in" style="width:{{item.percent}}"></text></view>
+                <view><text style="font-size:30rpx;">{{item.name}} </text><text class="per">{{item.percent}}</text></view>
+              </view>
+            </view>
+          </view>
+         <view wx:else class="noImprove">
+            <image src="../assets/img1.10e4489.png" class="noImprove__img"></image>
+          <view> <text class="noImprove__text">亲爱的，恭喜您的评测结果很好，希望你能够坚持现在的习惯哦</text></view>
+         </view>
+       </view>
+
+      </view>
+    </view>
+    <view class="result__item">
+      <view class="user-num">
+        <text>
+          数据为与您症状相同的 <text class="user__num--blue">5577</text>位用户<br/>
+          有效排名前五的方法
+        </text>
+      </view>
+    </view>
+    <view class="code">
+        <image class="code-img" src="../assets/code.png"></image>
+    </view>
+    <view class="result__item__h2 retest-wrap">
+      <navigator url="{{fromPage}}" open-type="redirect" class="retest" @tap="retest">重新测试&gt;&gt;</navigator>
+    </view>
+    <view class="footer">
+      <text class="footer__info">以上结果对您有帮助吗？</text>
+      <button class="footer__button {{isHelp==='1'?'isHelp':''}}"  @tap="setHelp({{1}})">有</button>
+      <button class="footer__button {{isHelp==='0'?'isHelp':''}}"  @tap="setHelp({{0}})">无</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {isArray} from '@/utils/util'
+  export default class Result extends wepy.page {
+    data = {
+      titleResult: '',// 不同量表的测评结果文字
+      title: '',
+      fromPage: '',// 判断从哪个量表过来
+      score: '',//情绪程度判断
+      suggests: '', // 专家说法
+      improve: [],//如何改善
+      resultText: '',// 评测的文字结果信息
+      showImprove: true,
+      showReTest: true,
+      isHelp: '',// 是否有帮助
+      retest:false
+    }
+    methods={
+      setHelp(v,e){
+        v===1?this.isHelp='1':this.isHelp='0'
+      }
+      ,retest(){
+        this.restest=true
+      }
+    }
+    setSuggest() {
+      let from = this.fromPage;
+      switch (from) {
+        case 'emotion':
+          this.suggests = `抑郁症又称抑郁障碍，
+              以显著而持久的心境低落为主要临床特征，
+              是心境障碍的主要类型。临床可见心境低落与其处境不相称，
+              情绪的消沉可以从闷闷不乐到悲痛欲绝，自卑抑郁，
+              甚至悲观厌世，可有自杀企图或行为；甚至发生木僵；
+              部分病例有明显的焦虑和运动性激越；严重者可出现幻觉、
+              妄想等精神病性症状。每次发作持续至少2周以上、长者甚或数年
+              ，多数病例有反复发作的倾向，每次发作大多数可以缓解，
+              部分可有残留症状或转为慢性。`;
+          break;
+        case 'tcmsleep':
+          this.suggests = `睡眠是生命的需要，所以人不能没有睡眠，
+              而且每天缺少的睡眠还要补上，否则会受到惩罚，
+              很像欠债一定要还一样。。`;
+          break;
+        case 'syndrome':
+          let data = {
+            SYNDROME_RESULT: this.$route.query.SYNDROME_RESULT
+          }
+          this.fetchData(data).then((res) => {
+            this.suggests = res.data_02;
+            this.improve = res.data_01;
+          })
+
+          break;
+        case 'memory':
+          this.suggests = `记忆是人类心智活动的一种，属于心理学或脑部科学的范畴。记忆代表着一个人对过去活动、感受、经验的印象累积，有相当多种分类，主要因环境、时间和知觉来分。`;
+          break
+        case 'perform':
+          this.suggests = `执行力是指有效利用资源、保质保量达成目标的能力，指的是贯彻战略意图，完成预定目标的操作能力。是把企业战略、规划、目标转化成为效益、成果的关键。`;
+          break
+        case 'response':
+          this.suggests = `有心理研究表明，人的思维是一种脉冲，它沿着人体的神经纤维运行，速度大约是每小时250公里。但是，不同的信号会引起不同速度的反应。
+比如，我们对声音的反应就要比对光线的反应快得多，我们对亮光的反应也要比对暗光的反应来得快。对颜色来说，多数人对红色的反应比白色快。从情绪来说，不愉快的事情比愉快的事情更容易引起多数人的反应。`;
+          break
+        case 'decision':
+          this.suggests = `识别和理解问题和机遇，比较不同来源的数据，运用有效的方法来选择行动方针或发展适当方法，采取行动来应对现有的现实、限制和可能的结果。`;
+          break
+        case 'working':
+          this.suggests = `瞬时记忆的容量非常有限，1956年，美国心理学家G．米勒发表了一篇题为《神奇数7加减2：我们加工信息的能力的某种限制》的论文，根据复述3至12位随机排列数字表的实验结果，发现信息一次呈现后，被试能回忆的最大数量——短时记忆的容量一般为7±2个单元。幼儿的记忆广度更为有限，通常是4±1个单元。中国学者测定的短时记忆广度是：无关联的汉字一次能记住6个，十进位数字为7个，线条排列为5个。`;
+          break
+        case 'digital':
+          this.suggests = `辨别能力：分析判断能力是指人对事物进行剖析、分辨、单独进行观察和研究的能力。分析判断能力较强的人，往往学术有专攻，技能有专长，在自己擅长的领域里，有着独到的成就和见解，并进入常人所难以达到的境界。
+同时，分析判断能力的高低还是一个人智力水平的体现。分析能力是先天的，但在很大程度上取决于后天的训练。在工作和生活中，经常会遇到一些事情、一些难题，分析判断能力较差的人，往往思来想后不得其解，以至束手无策；反之，分析判断能力强的人，往往能自如地应对一切难题。
+一般情况下，一个看似复杂的问题，经过理性思维的梳理后，会变得简单化、规律化，从而轻松、顺畅地被解答出来，这就是分析判断能力的魅力。`;
+          break
+        default:
+          break;
+      }
+    }
+    setImprove() {
+      let list = [
+        {
+          name: '身体锻炼',
+          percent: '70%'
+        },
+        {
+          name: '睡前引用少量温奶粉',
+          percent: '68%'
+        },
+        {
+          name: '晚餐少量，清单',
+          percent: '68%'
+        },
+        {
+          name: '晚餐后泡热水脚',
+          percent: '67%'
+        },
+        {
+          name: '有规律的时间内睡眠起床',
+          percent: '62%'
+        }
+      ]
+      if (this.fromPage === 'emotion') {
+        list = [
+          {
+            name: '多与人沟通',
+            percent: '80%'
+          },
+          {
+            name: '多与家人陪伴',
+            percent: '68%'
+          },
+          {
+            name: '坚持每天锻炼',
+            percent: '53%'
+          },
+          {
+            name: '多阅读健康书籍',
+            percent: '67%'
+          },
+          {
+            name: '有规律的时间内睡眠起床',
+            percent: '62%'
+          },
+        ]
+      }
+      else if (this.fromPage === 'syndrome') {
+        list = [];
+      }
+      else if (this.fromPage === 'tcmsleep') {
+        list = [
+          {
+            name: '身体锻炼',
+            percent: '70%'
+          },
+          {
+            name: '睡前饮用少量温奶粉',
+            percent: '68%'
+          },
+          {
+            name: '晚餐少量，清单',
+            percent: '68%'
+          },
+          {
+            name: '晚餐后泡热水脚 ',
+            percent: '67%'
+          },
+          {
+            name: '有规律的时间内睡眠起床',
+            percent: '62%'
+          },
+        ]
+      }
+      else if (this.fromPage === 'memory') {
+        list = [
+          {
+            name: '平心静气',
+            percent: '78%'
+          },
+          {
+            name: '劳逸结合',
+            percent: '58%'
+          },
+          {
+            name: '愉快的情绪',
+            percent: '80%'
+          },
+          {
+            name: '有规律的时间内睡眠起床',
+            percent: '62%'
+          }
+        ]
+      }
+      else if (this.fromPage === 'response') {
+        list = [
+          {
+            name: '培养兴趣',
+            percent: '78%'
+          },
+          {
+            name: '知识储备',
+            percent: '58%'
+          },
+          {
+            name: '愉快的情绪',
+            percent: '80%'
+          },
+          {
+            name: '有规律的时间内睡眠起床',
+            percent: '62%'
+          }
+        ]
+      }
+      else if (this.fromPage === 'perform') {
+        list = [
+          {
+            name: '培养兴趣',
+            percent: '78%'
+          },
+          {
+            name: '知识储备',
+            percent: '58%'
+          },
+          {
+            name: '愉快的情绪',
+            percent: '80%'
+          },
+          {
+            name: '多参与运动',
+            percent: '62%'
+          }
+        ]
+      }
+      else if (this.fromPage === 'decision') {
+        list = [
+          {
+            name: '立即采取行动',
+            percent: '60%'
+          },
+          {
+            name: '养成作决策的习惯',
+            percent: '90%'
+          },
+          {
+            name: '利弊权衡法',
+            percent: '70%'
+          },
+          {
+            name: '加强理论修养',
+            percent: '62%'
+          }
+        ]
+      }
+      else if (this.fromPage === 'working') {
+        list = [
+          {
+            name: '反复诵读经典诗词',
+            percent: '85%'
+          },
+          {
+            name: '减少碎片化思维',
+            percent: '70%'
+          },
+          {
+            name: '提高睡眠质量',
+            percent: '90%'
+          },
+          {
+            name: '注意饮食规律',
+            percent: '62%'
+          }
+        ]
+      }
+      else if (this.fromPage === 'digital') {
+        list = [
+          {
+            name: '定性分析',
+            percent: '50%'
+          },
+          {
+            name: '定量分析',
+            percent: '63%'
+          },
+          {
+            name: '比较分析',
+            percent: '80%'
+          },
+          {
+            name: '系统分析',
+            percent: '75%'
+          }
+        ]
+      }
+      this.improve = list;
+    }//设置如何改善
+    setTopTitle() {
+      let deep = '';// 置头部标题大字部份
+      let deepNum;// 根据分数来判断
+      if (this.score !== undefined && this.fromPage !== undefined) {
+        deepNum = this.score;
+        if (this.fromPage === 'emotion') {
+          switch (deepNum) {
+            case '0':
+              deep = '心态不错';
+              this.showImprove = false
+              break;
+            case '2':
+              deep = '轻度抑郁';
+              break;
+            case '3':
+              deep = '中度抑郁';
+              break;
+            case '4':
+              deep = '重度抑郁';
+              break;
+            default:
+              break;
+          }
+        }
+        else if (this.fromPage === 'tcmsleep') {
+          deep = `${deepNum}分`;
+          if (deepNum < 2) {
+
+            this.showImprove = false
+          }
+          else if (deepNum >= 2 && deepNum <= 12) {
+
+
+
+          } else if (deepNum >= 13 && deepNum <= 36) {
+
+
+          } else {
+
+
+          }
+        }
+        else if (this.fromPage === 'syndrome') {
+          deep = this.$route.query.SYNDROME_RESULT.slice(0, this.$route.query.SYNDROME_RESULT.length - 1)
+        }
+        else if (this.fromPage === 'memory') {
+
+          if (deepNum < 49.88) {
+            deep = '下降'
+
+
+          }
+          else if (deepNum >= 49.88 && deepNum < 72.89) {
+            deep = '欠佳';
+
+          }
+          else if (deepNum >= 72.89 && deepNum < 89) {
+            deep = '良好';
+
+
+          }
+          else {
+            deep = '很好';
+            this.showImprove = false
+
+
+          }
+          //保存做过的记录到vuex
+
+
+        }
+        else if (this.fromPage === 'perform') {
+
+          if (deepNum < 243.77) {
+            deep = '下降'
+
+          }
+          else if (deepNum >= 243.33 && deepNum < 263.77) {
+            deep = '欠佳';
+
+
+          }
+          else if (deepNum >= 263.77 && deepNum < 283.77) {
+            deep = '良好';
+
+
+          }
+          else {
+            deep = '很好';
+            this.showImprove = false
+
+
+          }
+          //保存做过的记录到vuex
+
+        }//执行能力
+        else if (this.fromPage === 'response') {
+
+          if (deepNum < 14) {
+            deep = '下降'
+
+
+          }
+          else if (deepNum >= 14 && deepNum < 16) {
+            deep = '欠佳';
+
+
+
+
+          }
+          else if (deepNum >= 16 && deepNum < 20) {
+            deep = '良好';
+
+
+          }
+          else {
+            deep = '很好';
+            this.showImprove = false
+
+
+          }
+          //保存做过的记录到vuex
+
+        }//反应速度
+        else if (this.fromPage === 'decision') {//
+
+          let lou = parseInt(deepNum)
+          let gu = parseInt(20 - deepNum)
+          if (lou < 17 && lou > 3) {
+            this.showImprove = false
+
+
+            deep = '正常'
+          }
+          else if (lou === 20 || gu === 20) {
+
+
+
+            deep = '偏执型'
+          }
+          else if (lou >= 17 && lou < 20) {
+
+            deep = '激进型'
+          }
+          else if (lou >= 1 && lou <= 3) {
+
+            deep = '保守型'
+          }
+          //保存做过的记录到vuex
+
+        }
+        else if (this.fromPage === 'working') {//
+
+          if (deepNum < 75.1) {
+            deep = '下降'
+
+
+          }
+          else if (deepNum >= 75.1 && deepNum < 85.1) {
+            deep = '欠佳';
+
+
+          }
+          else if (deepNum >= 85.1 && deepNum < 93.42) {
+            deep = '良好';
+
+
+          }
+          else {
+            deep = '很好';
+            this.showImprove = false
+
+
+          }
+          //保存做过的记录到vuex
+
+        }
+        else if (this.fromPage === 'digital') {//
+
+          if (deepNum < 25 && deepNum >= 0) {
+            deep = '下降'
+
+
+          }
+          else if (deepNum >= 25 && deepNum < 50) {
+            deep = '欠佳';
+
+
+          }
+          else if (deepNum >= 50 && deepNum < 75) {
+            deep = '良好';
+
+
+          }
+          else {
+            deep = '很好';
+            this.showImprove = false
+
+
+          }
+          //保存做过的记录到vuex
+
+        }
+        this.titleResult = deep;//设置头部标题大字部份
+      }
+      else { //中医症候
+        this.titleResult = this.$route.query.SYNDROME_RESULT.slice(0, this.$route.query.SYNDROME_RESULT.length - 1);
+      }
+      if (this.fromPage !== undefined) {//这是头部标题前缀
+
+        switch (this.fromPage) {
+          case 'emotion':
+            this.title = '您偏向于';
+            break;
+          case 'tcmsleep':
+            this.title = '您的睡眠测评得分';
+            break;
+          case 'syndrome':
+            this.title = '根据测评结果显示' +
+              '你属于';
+            break;
+          case 'response':
+            this.title = '您的反应能力'
+            break;
+          case 'perform':
+            this.title = '您的执行能力'
+            break;
+          case 'memory':
+            this.title = '您的记忆能力'
+            break;
+          case 'decision':
+            this.title = '您的风险决策能力是'
+            break;
+          case 'working':
+            this.title = '您的瞬时记忆能力'
+            break
+          case 'digital':
+            this.title = '您的细节观察能力'
+            break
+          default:
+            break;
+        }
+      }
+    }
+
+    onLoad(res) {
+      console.log(res)
+
+      this.fromPage = res.from
+      this.score = res.score
+      this.setTopTitle()
+      this.setSuggest()
+      this.setImprove()
+
+    }
+    onUnload(){
+
+      if(!this.retest){
+        this.$redirect('./home')
+      }
+      console.log('result unLoad')
+    }
+  }
+</script>
+
+

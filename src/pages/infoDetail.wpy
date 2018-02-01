@@ -1,0 +1,65 @@
+<template>
+  <view>
+    详情页
+  </view>
+</template>
+
+<script>
+import wepy from "wepy";
+
+export default class Home extends wepy.page {
+  data = {
+    indicatorDots: true,
+    banner: [
+      {
+        src: "/assets/banner.png"
+      },
+      {
+        src: "/assets/banner.png"
+      }
+    ],
+    list:[
+      {
+        testText:'情绪测评',
+        imgSrc:'../assets/1.png'
+      },
+      {
+        testText:'情绪测评',
+        imgSrc:'../assets/2.png'
+      },
+      {
+        imgSrc:'../assets/3.png',
+        testText:'情绪测评'
+      },
+      {
+        imgSrc:'../assets/4.png',
+        testText:'情绪测评'
+      },
+      {
+        imgSrc:'../assets/5.png',
+        testText:'情绪测评'
+      },
+      {
+        imgSrc:'../assets/6.png',
+        testText:'情绪测评'
+      },
+      {
+        imgSrc:'../assets/7.png',
+        testText:'情绪测评'
+      },
+      {
+        imgSrc:'../assets/8.png',
+        testText:'情绪测评'
+      }
+    ]
+  };
+  onLoad (options) {
+    console.log(options)
+  }
+
+}
+</script>
+
+<style lang='scss'>
+
+</style>
