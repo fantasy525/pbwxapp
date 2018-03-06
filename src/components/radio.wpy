@@ -1,58 +1,56 @@
 <template>
   <view
-    class=" test__options__item {{answer[questionIndex].selected===radioValue?'test__options__item--sel':''}}"
-    @tap="next({{item}},{{ questionIndex }})" >
+    class=" test__options__item {{answers[questionIndex].selected===radioValue?'test__options__item--sel':''}}"
+    @tap="next({{item}},{{questionIndex}})" >
     <view class="ball--title"
           style="background-color: {{ answersOptionColors[index]}};">
-     {{index+1}}
+      {{radioValue}}
     </view>
     <view class="test__answer">{{item.text}}</view>
-    <view class="{{answer[questionIndex].selected===radioValue?'test__btns--sel':''}}"></view>
+    <view class="{{answers[questionIndex].selected===radioValue?'test__btns--sel':''}}"></view>
   </view>
 </template>
 
 <script >
-import wepy from 'wepy'
-export default class Radio extends wepy.component {
-  data={
-    answersOptionColors:['#89bcfd','#76dcab','#ffcb7c','#ffa983','#FFD755']
-  }
-  onLoad(){
-    console.log('aaaa',this.item)
-  }
-  props={
-    questionIndex:{
-      type:Number,
-      default:0
-    },
-    item:{
-      type:Object,
-      default:{}
-    },
-    index:{
-      type:Object,
-      default:0
-    },
-    radioValue:{
-      type:String,
-      default:'33'
-    },
-    answer:{
-      type:Object,
-      default:{}
+  import wepy from 'wepy'
+  export default class Radio extends wepy.component {
+    data={
+      answersOptionColors:['#89bcfd','#76dcab','#ffcb7c','#ffa983','#FFD755']
     }
+    onLoad(){
 
-  }
-  computed={
-  }
-  methods={
-    next(item,index){
-
-       this.$emit('next',item,index)
+    }
+    props={
+      questionIndex:{
+        type:Number,
+        default:0
+      },
+      item:{
+        type:Object,
+        default:{}
+      },
+      index:{
+        type:Number,
+        default:0
+      },
+      radioValue:{
+        type:Number,
+        default:0
+      },
+      answers:{
+        type:Array,
+        default:[]
+      }
+    }
+    computed={
+    }
+    methods={
+      next(item,questionIndex){
+        console.log('radio click')
+        this.$emit('selected',item,questionIndex)
+      }
     }
   }
-
-}
 </script>
 
 <style lang="scss">
@@ -106,3 +104,112 @@ export default class Radio extends wepy.component {
     background-size:100% 100%;
   }
 </style>
+
+<!--<template>-->
+  <!--<view-->
+    <!--class=" test__options__item {{answer[questionIndex].selected===radioValue?'test__options__item&#45;&#45;sel':''}}"-->
+    <!--@tap="next({{item}},{{ questionIndex }})" >-->
+    <!--<view class="ball&#45;&#45;title"-->
+          <!--style="background-color: {{ answersOptionColors[index]}};">-->
+     <!--{{index+1}}-->
+    <!--</view>-->
+    <!--<view class="test__answer">{{item.text}}</view>-->
+    <!--<view class="{{answer[questionIndex].selected===radioValue?'test__btns&#45;&#45;sel':''}}"></view>-->
+  <!--</view>-->
+<!--</template>-->
+
+<!--<script >-->
+<!--import wepy from 'wepy'-->
+<!--export default class Radio extends wepy.component {-->
+  <!--data={-->
+    <!--answersOptionColors:['#89bcfd','#76dcab','#ffcb7c','#ffa983','#FFD755']-->
+  <!--}-->
+  <!--onLoad(){-->
+    <!--console.log('aaaa',this.item)-->
+  <!--}-->
+  <!--props={-->
+    <!--questionIndex:{-->
+      <!--type:Number,-->
+      <!--default:0-->
+    <!--},-->
+    <!--item:{-->
+      <!--type:Object,-->
+      <!--default:{}-->
+    <!--},-->
+    <!--index:{-->
+      <!--type:Object,-->
+      <!--default:0-->
+    <!--},-->
+    <!--radioValue:{-->
+      <!--type:String,-->
+      <!--default:'33'-->
+    <!--},-->
+    <!--answer:{-->
+      <!--type:Object,-->
+      <!--default:{}-->
+    <!--}-->
+
+  <!--}-->
+  <!--computed={-->
+  <!--}-->
+  <!--methods={-->
+    <!--next(item,index){-->
+
+       <!--this.$emit('next',item,index)-->
+    <!--}-->
+  <!--}-->
+
+<!--}-->
+<!--</script>-->
+
+<!--<style lang="scss">-->
+  <!--.test__options__item{-->
+    <!--position:relative;-->
+    <!--display:flex;-->
+    <!--align-items: center;-->
+    <!--padding-top:20rpx;-->
+    <!--padding-bottom:20rpx;-->
+    <!--border-bottom:1px solid #f5f5f5;-->
+    <!--.ball&#45;&#45;title{-->
+      <!--width:72rpx;-->
+      <!--height:72rpx;-->
+      <!--margin-left:10rpx;-->
+      <!--border-radius:72rpx;-->
+      <!--text-align:center;-->
+      <!--line-height:72rpx;-->
+      <!--color:#fff;-->
+    <!--}-->
+    <!--.test__answer{-->
+      <!--width:77%;-->
+      <!--margin-left:40rpx;-->
+      <!--color:#999;-->
+      <!--font-size:38rpx;-->
+    <!--}-->
+  <!--}-->
+  <!--.test__options__item&#45;&#45;sel{-->
+    <!--background-color:#f5f5f5;-->
+  <!--}-->
+  <!--.test__btns{-->
+    <!--display:flex;-->
+    <!--justify-content: space-between;-->
+    <!--margin-top:60rpx;-->
+    <!--.test__btn{-->
+      <!--display: inline-block;-->
+      <!--width:240rpx;-->
+      <!--height:84rpx;-->
+      <!--line-height:84rpx;-->
+      <!--font-size:30rpx;-->
+      <!--border:1px solid #54dcd7;-->
+      <!--color:#54dcd7;-->
+      <!--background-color:#fff;-->
+      <!--border-radius:40rpx;-->
+    <!--}-->
+  <!--}-->
+  <!--.test__btns&#45;&#45;sel{-->
+    <!--width:30rpx;-->
+    <!--height:30rpx;-->
+    <!--border-radius:30rpx;-->
+    <!--background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjkxNDRFNzlFMjA1MTFFN0I2MUJEMEJEREZFQTczNzIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MjkxNDRFN0FFMjA1MTFFN0I2MUJEMEJEREZFQTczNzIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoyOTE0NEU3N0UyMDUxMUU3QjYxQkQwQkRERkVBNzM3MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoyOTE0NEU3OEUyMDUxMUU3QjYxQkQwQkRERkVBNzM3MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsxAzNYAAAOPSURBVHja3JpBSFRBGMdn3yYo67YQXjwEgaAr0qFDdVGioDoUXaxDF0HWg4SEBzOrkx1yzUuQhIfE8CJk3iIiqFjcDnWx2MSSBKODlwhMI8HU/h/7vWV7rG/nvTfjm+2DH+qyM/P93N3vzXxvIxe/LAhFkQBtoBU0g0ZQD2pBFGyBdbACFgEtnAWzYNXvotMNycLv+wIKxEE76AAngOXy3CgLE5TBBXAdbIMMmAQzYM1vMpbPcXUgDb6BCXAywFwWj5/g+dI8v3aZKnANLPN/NSHURoLnXeZ1qnTJHAZz4C6ICb0R43XmeF2lMinwDrSIvY0WXjelQiYChsBDUC3CiWpef4jz8SVDAx+AAWFGDHA+ET8yd0C3MCu6OS9PMimDXpFSr1BKVoaqx6gwO0ZLVTmrxHVkKsQPu5eiMOW8DjllekMov0HKdu8/Fatoo1nHV96YqJz4BQ5hs/nd+cr0VZiIvVPoc77N4gaWYelyfWnpU7xYpl3DpnGvIsH5F2Q6DEruN+jiz/BR8EFiTIddAMjsR4DziGqR8+CVo2p9LDOODngHLD7qmipC8Vlyw9xm8ZndVBGKc5JztFrcfDBV5Dj3BmSi2eIuiqkiL8B+ybkaLW4H+QlqF70HOwaIUNSTTK2PRK6CJnBE5FtMP0MWoaglmajHQV/B/aK/qYl3xoOQDhGKKMlseRy0UeKxt5JCukQotkhm3eOgJk7Iq5CbyCnwMoAIxTrJrPgY+JgTkBUqJ/JUwY59xeKq5DVqwHOR7xeXE6Kfp8uI1Cgo84sk4/c2AB1Zn7gIkcASi73RLEKxQDLZABO4CVEnMsliukUoshaX1m1NQn/2SITynyUZutGTCTiZm5BuEYrMdENy1d76TyqYsJyQLpFC/rbMjAhwK05CSKfIKudfkKFbb2OKJreFboOz4BZ4pkmEYgxvsTX72Gw/+F/1zeiBwQrrzAzaIqLE2f8emK8QkXnOV+wmswku77IzNik2OM9NNxmKHOgxXKaH8xTlZCjGRf5+vImR5vyErAzFTYXlWlkZ5ryEVxlqVFwx6BVKcz47fmRsoRsi3/vdCPHD3sV5uHaCZNuy9B49FkLZnud1x2We7KXHnOPWUj9feXVf2ft5vZzsIK8Nc6rrI7SFAMOKNqfOTeMwzz/ivI6oline+tD9+IOgE7wOcMDb5vGdPN8Az+85gn55jnarj5hQvglYHH8FGABwi+ckB0OauwAAAABJRU5ErkJggg==) center center no-repeat;-->
+    <!--background-size:100% 100%;-->
+  <!--}-->
+<!--</style>-->

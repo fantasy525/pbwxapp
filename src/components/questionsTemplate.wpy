@@ -9,9 +9,9 @@
           抑郁症是老年期最常见的精神障碍之一，危害老年人的身心健康。老年人持续加重的抑郁症状可能是老年性痴呆的早期征象。本测评采用情绪自评量表对近期情绪状态尤其是抑郁症状进行评估。若体检者抑郁症状为阳性，需接受进一步专业检查。该测验时长约为3分钟。
         </text>
       </view>
-     <view class="start-wrap">
-       <button class="button-start" @tap="goTest">开始答题</button>
-     </view>
+      <view class="start-wrap">
+        <button class="button-start" @tap="goTest">开始答题</button>
+      </view>
     </view>
     <view class="test__content" wx:if="{{!goTest}}">
       <view class="process">
@@ -21,39 +21,33 @@
           stroke-width="6"
           percent="{{((questionIndex+1)/questionTotal)*100}}"  />
       </view>
-      <block wx:if="{{!questions[questionIndex].subQuestions}}">
-        <view class="test__title">
-          {{questions[questionIndex].title}}
-        </view>
-        <view class="test__options" >
-          <repeat
-            for="{{questions[questionIndex].options}}"
-            key="index"
-            index="index"
-            item="item"
-          >
-            <radio
-              :questionIndex.sync="questionIndex"
-              :item.sync="item"
-              :radioValue.sync="index"
-              :answer.sync="answers"
-              :index.sync="index"
-            >
-            </radio>
-          </repeat>
-        </view>
+      <block wx:if="{{hasSubquestions}}">
+        <mutilQuestion
+          key="mutilQuestion"
+          :questions.sync="questions"
+          :answers.sync="answers"
+          :questionIndex.sync="questionIndex"
+        >
+        </mutilQuestion>
       </block>
-      <block wx:else>
-        <!--<mutilQuestion-->
-        <!--:subQuestions="questions[questionIndex].subQuestions"-->
-        <!--&gt;-->
-
-        <!--</mutilQuestion>-->
-      </block>
+       <block  wx:else>
+         <view class="test__title">
+           {{questions[questionIndex].title}}
+         </view>
+         <view class="test__options" >
+           <radioGroup
+             key="radioGroup"
+             :answers.sync="answers"
+             :questions.sync="questions"
+             :questionIndex.sync="questionIndex"
+           >
+           </radioGroup>
+         </view>
+       </block>
       <view class="test__btns">
         <button class="test__btn prev" hidden="{{questionIndex==0}}"  @tap="prev">上一题</button>
         <button class=" test__btn next"
-                hidden="{{!answers[questionIndex].hasTest||questionIndex===answers.length-1}}"
+                hidden="{{!showNextBtn}}"
                 @tap="buttonNext">下一题</button>
         <button class=" test__btn text__submit"
                 hidden="{{!(questionIndex===answers.length-1)}}"
@@ -63,78 +57,90 @@
     </view>
   </view>
 </template>
-
 <script >
-import wepy from 'wepy'
-import Radio from '@/components/radio'
-import mutilQuestion from '@/components/mutilQuestion'
-export default class QuestionsTemplate extends wepy.component {
-  data={
-    goTest:false,
-    questionIndex:0,
-    canNext:true// 防止快速点击题目
-  }
-  props={
-    questions:{
-      type:Array,
-      default:[]
-    },
-    answers:{
-      type:Array,
-      default:[],
-      twoWay:true
+  import wepy from 'wepy'
+  import Radio from '@/components/radio'
+  import mutilQuestion from '@/components/mutilQuestion'
+  import radioGroup from '@/components/radioGroup'
+  export default class QuestionsTemplate extends wepy.component {
+    data={
+      goTest:false,
+      questionIndex:0,
+      canNext:true,// 防止快速点击题目
+      showNextBtn:false
     }
-  }
-  computed={
-    questionTotal(){
-      return this.questions.length
-    }
-
-
-  }
-  methods={
-    goTest(){
-      this.goTest=false
-    },
-    prev(){
-      this.questionIndex--
-    },
-    buttonNext(){
-      this.questionIndex++
-    },
-    submit(){
-      this.$emit('submit')
-    }
-  }
-  events={
-    async next(item,index){
-      console.log( this.canNext)
-      if(!this.canNext) return
-      this.canNext=false
-      if(item){ // 增加hasTest字段，辅助判断是否显示下一题按钮，默认做过后显示,对应hasTest为false
-        this.answers[this.questionIndex]={hasTest:false,selected:item.index,value:item.value}
+    props={
+      questions:{
+        type:Array,
+        default:[]
+      },
+      answers:{
+        type:Array,
+        default:[],
+        twoWay:true
       }
-      await this.$root.$parent.sleep(0.2) // 可以看到点击选中的效果
-      console.log('时间到了')
-      this.canNext=true
-      if(this.questionIndex===this.questions.length-1) return
-      this.questionIndex++ // 改变后会立刻切换题目
-      // await this.$parent.sleep(1)
-      this.$apply()
-      this.answers[index].hasTest=true // 这是为true，此时更改本题目的hasTest,questionIndex已经改变，界面看到的是下一题保证了不会看到下一题按钮
-      this.$apply()
-      console.log('结束')
+    }
+    computed={
+      questionTotal(){
+        return this.questions.length
+      },
+      hasSubquestions(){
+        if(this.questions[this.questionIndex].children){
+          return true
+        }
+        return false
+      },
+      hiddenNext(){
+        return true
+      }
+    }
+    handleShowNext(){
+      if(this.answers[this.questionIndex].selected!==''){
+        this.showNextBtn=true
+      }else{
+        this.showNextBtn=false
+      }
+    }
+    methods={
+      goTest(){
+        this.goTest=false
+      },
+      prev(){
+        this.questionIndex--
+        this.handleShowNext()
+      },
+      buttonNext(){
+        this.questionIndex++
+        this.handleShowNext()
+      },
+      submit(){
+        this.$emit('submit')
+      }
+    }
+    events={
+      next(canNext){
+        if(!canNext) return
+        console.log('template--next')
+        if(this.questionIndex===this.questions.length-1) return
+       // this.canNext=true
+        this.questionIndex++ // 改变后会立刻切换题目
+        this.handleShowNext()
+      //  this.canNext=false
+        console.log('结束')
+
+      }
+    }
+    onLoad(){
+      console.log(this.answers)
+    }
+    components={
+      radioGroup:radioGroup,
+      radio:Radio,
+      mutilQuestion:mutilQuestion
+
 
     }
   }
-  onLoad(){
-
-  }
-  components={
-    radio:Radio,
-    mutilQuestion:mutilQuestion
-  }
-}
 </script>
 
 <style lang="scss">
@@ -193,3 +199,199 @@ export default class QuestionsTemplate extends wepy.component {
     margin-top:30rpx;
   }
 </style>
+
+<!--<template>-->
+  <!--<view>-->
+    <!--<view class="test__indro"  wx:if="{{goTest}}">-->
+      <!--<view class="test__indro__banner">-->
+        <!--<image src="/assets/sas.jpg"></image>-->
+      <!--</view>-->
+      <!--<view class="test__desc">-->
+        <!--<text>-->
+          <!--抑郁症是老年期最常见的精神障碍之一，危害老年人的身心健康。老年人持续加重的抑郁症状可能是老年性痴呆的早期征象。本测评采用情绪自评量表对近期情绪状态尤其是抑郁症状进行评估。若体检者抑郁症状为阳性，需接受进一步专业检查。该测验时长约为3分钟。-->
+        <!--</text>-->
+      <!--</view>-->
+     <!--<view class="start-wrap">-->
+       <!--<button class="button-start" @tap="goTest">开始答题</button>-->
+     <!--</view>-->
+    <!--</view>-->
+    <!--<view class="test__content" wx:if="{{!goTest}}">-->
+      <!--<view class="process">-->
+        <!--<text>{{questionIndex+1}}/{{questionTotal}}</text>-->
+        <!--<progress-->
+          <!--class="process-bar"-->
+          <!--stroke-width="6"-->
+          <!--percent="{{((questionIndex+1)/questionTotal)*100}}"  />-->
+      <!--</view>-->
+      <!--<block wx:if="{{!questions[questionIndex].subQuestions}}">-->
+        <!--<view class="test__title">-->
+          <!--{{questions[questionIndex].title}}-->
+        <!--</view>-->
+        <!--<view class="test__options" >-->
+          <!--<repeat-->
+            <!--for="{{questions[questionIndex].options}}"-->
+            <!--key="index"-->
+            <!--index="index"-->
+            <!--item="item"-->
+          <!--&gt;-->
+            <!--<radio-->
+              <!--:questionIndex.sync="questionIndex"-->
+              <!--:item.sync="item"-->
+              <!--:radioValue.sync="index"-->
+              <!--:answer.sync="answers"-->
+              <!--:index.sync="index"-->
+            <!--&gt;-->
+            <!--</radio>-->
+          <!--</repeat>-->
+        <!--</view>-->
+      <!--</block>-->
+      <!--<block wx:else>-->
+        <!--&lt;!&ndash;<mutilQuestion&ndash;&gt;-->
+        <!--&lt;!&ndash;:subQuestions="questions[questionIndex].subQuestions"&ndash;&gt;-->
+        <!--&lt;!&ndash;&gt;&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</mutilQuestion>&ndash;&gt;-->
+      <!--</block>-->
+      <!--<view class="test__btns">-->
+        <!--<button class="test__btn prev" hidden="{{questionIndex==0}}"  @tap="prev">上一题</button>-->
+        <!--<button class=" test__btn next"-->
+                <!--hidden="{{!answers[questionIndex].hasTest||questionIndex===answers.length-1}}"-->
+                <!--@tap="buttonNext">下一题</button>-->
+        <!--<button class=" test__btn text__submit"-->
+                <!--hidden="{{!(questionIndex===answers.length-1)}}"-->
+                <!--@tap="submit"-->
+        <!--&gt;提交结果</button>-->
+      <!--</view>-->
+    <!--</view>-->
+  <!--</view>-->
+<!--</template>-->
+
+<!--<script >-->
+<!--import wepy from 'wepy'-->
+<!--import Radio from '@/components/radio'-->
+<!--import mutilQuestion from '@/components/mutilQuestion'-->
+<!--export default class QuestionsTemplate extends wepy.component {-->
+  <!--data={-->
+    <!--goTest:false,-->
+    <!--questionIndex:0,-->
+    <!--canNext:true// 防止快速点击题目-->
+  <!--}-->
+  <!--props={-->
+    <!--questions:{-->
+      <!--type:Array,-->
+      <!--default:[]-->
+    <!--},-->
+    <!--answers:{-->
+      <!--type:Array,-->
+      <!--default:[],-->
+      <!--twoWay:true-->
+    <!--}-->
+  <!--}-->
+  <!--computed={-->
+    <!--questionTotal(){-->
+      <!--return this.questions.length-->
+    <!--}-->
+
+
+  <!--}-->
+  <!--methods={-->
+    <!--goTest(){-->
+      <!--this.goTest=false-->
+    <!--},-->
+    <!--prev(){-->
+      <!--this.questionIndex&#45;&#45;-->
+    <!--},-->
+    <!--buttonNext(){-->
+      <!--this.questionIndex++-->
+    <!--},-->
+    <!--submit(){-->
+      <!--this.$emit('submit')-->
+    <!--}-->
+  <!--}-->
+  <!--events={-->
+    <!--async next(item,index){-->
+      <!--console.log( this.canNext)-->
+      <!--if(!this.canNext) return-->
+      <!--this.canNext=false-->
+      <!--if(item){ // 增加hasTest字段，辅助判断是否显示下一题按钮，默认做过后显示,对应hasTest为false-->
+        <!--this.answers[this.questionIndex]={hasTest:false,selected:item.index,value:item.value}-->
+      <!--}-->
+      <!--await this.$root.$parent.sleep(0.2) // 可以看到点击选中的效果-->
+      <!--console.log('时间到了')-->
+      <!--this.canNext=true-->
+      <!--if(this.questionIndex===this.questions.length-1) return-->
+      <!--this.questionIndex++ // 改变后会立刻切换题目-->
+      <!--// await this.$parent.sleep(1)-->
+      <!--this.$apply()-->
+      <!--this.answers[index].hasTest=true // 这是为true，此时更改本题目的hasTest,questionIndex已经改变，界面看到的是下一题保证了不会看到下一题按钮-->
+      <!--this.$apply()-->
+      <!--console.log('结束')-->
+
+    <!--}-->
+  <!--}-->
+  <!--onLoad(){-->
+
+  <!--}-->
+  <!--components={-->
+    <!--radio:Radio,-->
+    <!--mutilQuestion:mutilQuestion-->
+  <!--}-->
+<!--}-->
+<!--</script>-->
+
+<!--<style lang="scss">-->
+  <!--.test__indro{-->
+    <!--position:fixed;-->
+    <!--top:0;-->
+    <!--left:0;-->
+    <!--right:0;-->
+    <!--bottom:0;-->
+    <!--padding:30rpx 30rpx 0 30rpx;-->
+    <!--.test__indro__banner {-->
+      <!--image{-->
+        <!--border-radius:10rpx;-->
+        <!--width:100%;-->
+      <!--}-->
+
+    <!--}-->
+    <!--.test__desc{-->
+      <!--text{-->
+        <!--font-size:36rpx;-->
+        <!--color:#333;-->
+        <!--line-height:30rpx;-->
+      <!--}-->
+    <!--}-->
+    <!--.button-start{-->
+      <!--width:247rpx;-->
+      <!--margin:30rpx auto 0;-->
+      <!--background-color: #54dcd7;-->
+      <!--color:#fff;-->
+      <!--font-size:40rpx;-->
+      <!--height:108rpx;-->
+      <!--line-height:108rpx;-->
+      <!--border-radius:10rpx;-->
+
+    <!--}-->
+    <!--.start-wrap{-->
+      <!--display:flex;-->
+      <!--justify-content: center;-->
+    <!--}-->
+  <!--}-->
+  <!--.test__content{-->
+    <!--padding:0 24rpx;-->
+  <!--}-->
+  <!--.process{-->
+    <!--font-size:30rpx;-->
+    <!--color:#999;-->
+    <!--vertical-align: middle;-->
+    <!--.process-bar{-->
+      <!--width:83%;-->
+      <!--display:inline-block;-->
+      <!--margin-left:24rpx;-->
+      <!--vertical-align: middle;-->
+    <!--}-->
+  <!--}-->
+  <!--.test__title{-->
+    <!--margin-top:30rpx;-->
+  <!--}-->
+<!--</style>-->

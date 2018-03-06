@@ -12,45 +12,66 @@
 <script>
   import wepy from 'wepy'
   import QuestionsTemplate from '@/components/questionsTemplate'
+  import {Syndrome} from '@/utils/syndrome'
   export default class Tcmsleep extends wepy.page {
     data={
       questions:[
         {
-          title:'1.您的睡眠时间足够么',
+          title:'1.记忆减退',
           options:[
             {
               index:0,
-              text:'是',
-              value:1
+              text:'没有',
+              value:0
             },
             {
               index:1,
-              text:'否',
-              value:0
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
             }
           ]
         },
         {
-          title:'2. 醒来后是否感到充分休息了？',
+          title:'2. 反应迟钝',
           options:[
             {
               index:0,
-              text:'是',
-              value:1
+              text:'没有',
+              value:0
             },
             {
               index:1,
-              text:'否',
-              value:0
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
             }
           ]
         },
         {
-          title:'3. 整晚不能睡觉？',
+          title:'3. 性情改变',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -67,15 +88,16 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
+
         {
-          title:'4. 晚上入睡困难？',
+          title:'4.腰酸骨软或骨质疏松？',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -92,15 +114,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'5. 睡觉时容易惊醒？',
+          title:'5.头晕耳鸣，耳鸣声音细小如同蝉鸣？',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -117,19 +139,269 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'6. 睡眠情况',
+          title:'6.腰膝酸软，性欲减退？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'7.夜尿频多，或小便失禁？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'8.常感到怕冷，手脚冰凉？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'9.小便时间长且颜色清亮？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'10. 常感到疲乏无力，不愿多说话？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'11.经常容易感冒而且爱出汗？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'12.口唇颜色淡、指甲苍白？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'13.眼睛看东西容易疲劳？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'14.常感到眼睛干涩？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'15.常有胃口差，或腹胀的现象？',
+          options:[
+            {
+              index:0,
+              text:'没有',
+              value:0
+            },
+            {
+              index:1,
+              text:'有时',
+              value:1
+            },
+            {
+              index:2,
+              text:'常常',
+              value:2
+            },
+            {
+              index:3,
+              text:'严重',
+              value:3
+            }
+          ]
+        },
+        {
+          title:'16. 大便情况',
           children:true,
           subQuestions:[
             {
-              title:'睡觉时多梦，且困在梦中醒不来？',
+              title:'容易腹泻，或大便不成形。',
               options:[
                 {
                   index:0,
-                  text:'无',
+                  text:'没有',
                   value:0
                 },
                 {
@@ -150,12 +422,12 @@
               ]
             },
             {
-              title:'睡觉时多梦易醒，醒后难以入睡？',
+              title:'常常大便干燥或便秘，或大便不成形。',
               options:[
                 {
                   index:0,
-                  text:'无',
-                  value:0
+                  text:'没有',
+                  value:1
                 },
                 {
                   index:1,
@@ -171,42 +443,42 @@
                   index:3,
                   text:'严重',
                   value:3
+                }
+              ]
+            },
+            {
+              title:'常常大便干燥或便秘，大便成形。',
+              options:[
+                {
+                  index:0,
+                  text:'没有',
+                  value:1
                 },
+                {
+                  index:1,
+                  text:'有时',
+                  value:1
+                },
+                {
+                  index:2,
+                  text:'常常',
+                  value:2
+                },
+                {
+                  index:3,
+                  text:'严重',
+                  value:3
+                }
               ]
             }
           ]
         },
         {
-          title:'7.睡醒很早，醒后不能再次入睡',
+          title:'17.常常口中黏腻，甚至有痰？',
           options:[
             {
               index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:0,
-              text:'常常',
-              value:2
-            },
-            {
-              index:0,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'8. 嗜睡（白天睡意过多）？',
-          options:[
-            {
-              index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -223,15 +495,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'9. 以上出现的症状持续了多久？',
+          title:'18.有口臭或口苦的现象？',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -248,15 +520,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'10. 醒来后是否感到头晕？',
+          title:'19.爱发脾气',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -273,15 +545,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'11. 醒来后是否感到眼睛涩痛？',
+          title:'20.生气后常感到头目胀痛或头晕目眩？',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -298,15 +570,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'12. 醒来后是否感到心慌，胸闷？',
+          title:'21.身体常感到刺痛或闷痛，且部位固定？',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -323,15 +595,15 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
         },
         {
-          title:'13. 醒来后是否感到胸肋部位疼痛？',
+          title:'22. 舌像情况，选择下列和您近似的舌像',
           options:[
             {
               index:0,
-              text:'无',
+              text:'没有',
               value:0
             },
             {
@@ -348,159 +620,9 @@
               index:3,
               text:'严重',
               value:3
-            },
+            }
           ]
-        },
-        {
-          title:'14. 是否感到睡后不解疲乏，腰膝酸软？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'15. 是否心烦、急躁、容易生气？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'16. 是否会有心情低落？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'17. 是否会多思多虑（对事情思考较多）？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'18. 是否容易忘记事情或丢三落四？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
-        {
-          title:'19. 是否影响食欲？',
-          options:[
-            {
-              index:0,
-              text:'无',
-              value:0
-            },
-            {
-              index:1,
-              text:'有时',
-              value:1
-            },
-            {
-              index:2,
-              text:'常常',
-              value:2
-            },
-            {
-              index:3,
-              text:'严重',
-              value:3
-            },
-          ]
-        },
+        }
 
       ],
       answers:[]
@@ -524,9 +646,12 @@
           })
           return
         }
-        let [TCMSLEEP_SCORE, TCMSLEEP_RESULT, TCMSLEEP_PROPOSAL] = this.bianZhengSleep();
-        console.log('睡眠得分',TCMSLEEP_SCORE);
-        this.$redirect('/pages/result',{from:'tcmsleep',score:TCMSLEEP_SCORE})
+       // debugger
+        //const scores=Syndrome.getScores(this.answers).join().split(',')
+//        this.answers.SYNDROME_RESULT = Syndrome.nameOfZhengXing(scores)
+        const TCMSLEEP_SCORE='脾虚型；'
+        console.log(this.answers.SYNDROME_RESULT)
+        this.$redirect('/pages/result',{from:'syndrome',score:TCMSLEEP_SCORE})
         console.log('tijao')
       }
     }

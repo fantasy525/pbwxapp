@@ -17,16 +17,18 @@
   export default class extends wepy.app {
     config = {
       pages: [
-        "pages/emotion",
-        'pages/index',
 
         'pages/home',
-        "pages/result",
-
+        "pages/infoDetail",
+        "pages/syndrome",
         "pages/tcmsleep",
+        "pages/emotion",
+        'pages/index',
+        "pages/result",
         "pages/mine",
         "pages/info",
-        "pages/infoDetail"
+        "pages/gameView",
+
       ],
       window: {
         backgroundTextStyle: 'light',
@@ -42,12 +44,13 @@
           "text": "首页",
           "iconPath": "assets/home.png",
           "selectedIconPath": "assets/home_active.png"
-        }, {
-          "pagePath": "pages/info",
-          "text": "资讯",
-          "iconPath": "assets/home.png",
-          "selectedIconPath": "assets/home_active.png"
         },
+//          {
+//          "pagePath": "pages/info",
+//          "text": "资讯",
+//          "iconPath": "assets/home.png",
+//          "selectedIconPath": "assets/home_active.png"
+//        },
           {
             "pagePath": "pages/mine",
             "text": "我的",
@@ -96,14 +99,14 @@
       wepy.getSetting({
         success: res => {
           if (res.authSetting['scope.userInfo']) {
-            console.log('授权过了')
+
           }
         }
       })
       wepy.getUserInfo({
         success(res) {
           that.globalData.userInfo = res.userInfo
-          console.log(that.globalData)
+
           cb && cb(res.userInfo)
         }
       })

@@ -209,7 +209,7 @@
       </view>
     </view>
     <view class="code">
-        <image class="code-img" src="../assets/code.png"></image>
+        <image class="code-img" src="../assets/code.jpg"></image>
     </view>
     <view class="result__item__h2 retest-wrap">
       <navigator url="{{fromPage}}" open-type="redirect" class="retest" @tap="retest">重新测试&gt;&gt;</navigator>
@@ -264,16 +264,16 @@
         case 'tcmsleep':
           this.suggests = `睡眠是生命的需要，所以人不能没有睡眠，
               而且每天缺少的睡眠还要补上，否则会受到惩罚，
-              很像欠债一定要还一样。。`;
+              很像欠债一定要还一样。`;
           break;
         case 'syndrome':
-          let data = {
-            SYNDROME_RESULT: this.$route.query.SYNDROME_RESULT
-          }
-          this.fetchData(data).then((res) => {
-            this.suggests = res.data_02;
-            this.improve = res.data_01;
-          })
+//          let data = {
+//            SYNDROME_RESULT: this.$route.query.SYNDROME_RESULT
+//          }
+//          this.fetchData(data).then((res) => {
+            this.suggests = '暂无数据';
+            this.improve = '暂无数据';
+//          })
 
           break;
         case 'memory':
@@ -540,7 +540,7 @@
           }
         }
         else if (this.fromPage === 'syndrome') {
-          deep = this.$route.query.SYNDROME_RESULT.slice(0, this.$route.query.SYNDROME_RESULT.length - 1)
+          deep = this.score
         }
         else if (this.fromPage === 'memory') {
 
@@ -702,9 +702,9 @@
         }
         this.titleResult = deep;//设置头部标题大字部份
       }
-      else { //中医症候
-        this.titleResult = this.$route.query.SYNDROME_RESULT.slice(0, this.$route.query.SYNDROME_RESULT.length - 1);
-      }
+//      else { //中医症候
+//        this.titleResult = this.$route.query.SYNDROME_RESULT.slice(0, this.$route.query.SYNDROME_RESULT.length - 1);
+//      }
       if (this.fromPage !== undefined) {//这是头部标题前缀
 
         switch (this.fromPage) {
@@ -741,10 +741,104 @@
         }
       }
     }
-
+    setResultText() {
+      // 设置文字结果
+      if (this.fromPage === "emotion") {
+        switch (this.score) {
+          case "0":
+            this.resultText = "您的情绪状况良好";
+            break;
+          case "1":
+            this.resultText = "你可能患有轻度抑郁";
+            break;
+          case "2":
+            this.resultText = "你可能患有中度抑郁";
+            break;
+          case "3":
+            this.resultText = "你可能患有重度抑郁";
+            break;
+        }
+      } else if (this.fromPage === "tcmsleep") {
+        if (this.score < 2) {
+          this.resultText = "您的睡眠状况良好";
+        } else if (this.score >= 2 && this.score <= 12) {
+          this.resultText = "您可能患有轻度失眠";
+        } else if (this.score >= 13 && this.score <= 36) {
+          this.resultText = "您可能患有中度失眠";
+        } else {
+          this.resultText = "您可能患有重度失眠";
+        }
+      } else if (this.fromPage === "syndrome") {
+        this.resultText = "";
+      } else if (this.fromPage === "memory") {
+        if (this.score < 2) {
+          this.resultText = "您的记忆能力下降";
+        } else if (this.score >= 2 && this.score < 12) {
+          this.resultText = "您的记忆能力欠佳";
+        } else if (this.score >= 13 && this.score < 36) {
+          this.resultText = "您的记忆能力良好";
+        } else {
+          this.resultText = "您的记忆能力很好";
+        }
+      } else if (this.fromPage === "perform") {
+        if (this.score < 243.77) {
+          this.resultText = "您的执行能力下降";
+        } else if (this.score >= 243.33 && this.score < 263.77) {
+          this.resultText = "您的执行能力欠佳";
+        } else if (this.score >= 263.77 && this.score < 283.77) {
+          this.resultText = "您的执行能力良好";
+        } else {
+          this.resultText = "您的执行能力很好";
+        }
+      } else if (this.fromPage === "response") {
+        if (this.score < 14) {
+          this.resultText = "您的反应能力下降";
+        } else if (this.score >= 14 && this.score < 16) {
+          this.resultText = "您的反应能力欠佳";
+        } else if (this.score >= 16 && this.score < 20) {
+          this.resultText = "您的反应能力良好";
+        } else {
+          this.resultText = "您的反应能力很好";
+        }
+      } else if (this.fromPage === "decision") {
+        let deepNum = this.score;
+        let lou = parseInt(deepNum);
+        let gu = parseInt(20 - deepNum);
+        if (lou < 17 && lou > 3) {
+          this.resultText = "正常";
+        } else if (lou === 20 || gu === 20) {
+          this.resultText = "偏执型";
+        } else if (lou >= 17 && lou < 20) {
+          this.resultText = "激进型";
+        } else if (lou >= 1 && lou <= 3) {
+          this.resultText = "保守型";
+        }
+      } else if (this.fromPage === "working") {
+        let deepNum = this.score;
+        if (deepNum < 75.1) {
+          this.resultText = "下降";
+        } else if (deepNum >= 75.1 && deepNum < 85.1) {
+          this.resultText = "欠佳";
+        } else if (deepNum >= 85.1 && deepNum < 93.42) {
+          this.resultText = "良好";
+        } else {
+          this.resultText = "很好";
+        }
+      } else if (this.fromPage === "digital") {
+        let deepNum = this.score;
+        if (deepNum <= 25 && deepNum >= 0) {
+          this.resultText = "下降";
+        } else if (deepNum >= 25 && deepNum < 50) {
+          this.resultText = "欠佳";
+        } else if (deepNum >= 50 && deepNum < 75) {
+          this.resultText = "良好";
+        } else {
+          this.resultText = "很好";
+        }
+      }
+    }
     onLoad(res) {
       console.log(res)
-
       this.fromPage = res.from
       this.score = res.score
       this.setTopTitle()

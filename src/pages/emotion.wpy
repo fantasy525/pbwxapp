@@ -44,6 +44,7 @@
         },
         {
           title:'2.经常想哭？',
+
           options:[
             { index:0,
               text:'没有',
@@ -372,7 +373,7 @@
     methods={
     }
     onLoad(){
-      console.log(getCurrentPages())
+
       for(let i=0;i<this.questions.length;i++){
         this.answers.push({
           selected:'',
@@ -455,7 +456,7 @@
         this.emotionDeep = 3;
         EMOTION_RESULT = "该患者为中度抑郁!";
       } else if (depressedScore >= 2) {
-        this.emotionDeep = 1;
+        this.emotionDeep = 2;
         EMOTION_RESULT = "该患者为轻度抑郁!";
       } else {
         this.emotionDeep = 0;

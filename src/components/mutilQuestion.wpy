@@ -3,52 +3,128 @@
 </style>
 <template>
   <view class="test__title">
-    {{questions[questionIndex].title}}2222
+    {{questions[questionIndex].title}}
   </view>
-  <block wx:for="{subQuestions}}">
+
+  <repeat for="{{subQuestions}}"
+          item="subItem"
+          index="subIndex"
+          key="subIndex">
     <view class="test__title">
-      {{item.title}}
+      {{subItem.title}}
     </view>
-    <view class="test__options" >
+    <view class="test__options">
       <repeat
-        for="{{item.options}}"
-        key="index2"
-        index="index2"
-        item="item2"
+        for="{{subItem.options}}"
+        item="itemOption"
+        index="itemIndex"
+        key="itemIndex"
       >
-        <radio
-          :questionIndex.sync="index"
-          :item.sync="item2"
-          :radioValue.sync="index2"
-          :answer.sync="answers[]"
-          :index.sync="index2"
-        >
-        </radio>
+        <myRadio
+          :questionIndex.sync="subIndex"
+          :item.sync="itemOption"
+          :radioValue="itemIndex"
+          :index.sync="itemIndex"
+          :answers="myAnswers"
+        ></myRadio>
       </repeat>
     </view>
-  </block>
+  </repeat>
 </template>
 
-<script >
-import wepy from 'wepy'
-import Radio from '@/components/radio'
-export default class mutilQuestion extends wepy.component{
-  props={
-    questions:{
-      type:Array,
-      default:[]
-    },
-    answers:{
-      type:Array,
-      default:[],
-      twoWay:true
-    },
-    subQuestions:{
-      type:Array,
-      default:[]
+<script>
+  import wepy from 'wepy'
+  import myRadio from '@/components/radio'
+  //import Counter from'@/components/counter'
+  export default class mutilQuestion extends wepy.component {
+    data = {
+      myAnswers: [],
+      hasSubQuestion: true,
+      subQuestionIndex: 0,
+      selecteds:[],
+      values:[],
+      onlyClick:true
+    }
+    props = {
+      questions: {
+        type: Array,
+        default: []
+      },
+      answers: {
+        type: Array,
+        default: [],
+        twoWay: true
+      },
+      subQuestions: {
+        type: Array,
+        default: []
+      },
+      questionIndex: {
+        type: Number,
+        default: 0
+      }
+
     }
 
+    onLoad() {
+      this.subQuestions.forEach(() => {
+        this.myAnswers.push({
+          selected: '',
+          value: ''
+        })
+      })
+    }
+    computed = {
+      subQuestions() {
+        if(!this.questions[this.questionIndex].subQuestions){
+          return []
+        }
+        return this.questions[this.questionIndex].subQuestions
+      }
+    }
+
+    sleep(s, fn) {
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+
+          resolve('sleep finshed')
+        }, s * 1000)
+      })
+    }
+    checkSelecteds(selecteds){
+      return selecteds ==null||selecteds===undefined
+    }
+    events = {
+      async selected(item, subQuestionIndex) {
+
+        console.log('jinru ', item,subQuestionIndex)
+        if(!this.onlyClick) return
+        this.onlyClick=false
+        this.myAnswers[subQuestionIndex] = {selected: item.index, value: item.value}
+//        this.selecteds.push(item.index+'')
+//        this.values.push(item.value+'')
+        this.selecteds[subQuestionIndex]=item.index+''
+        this.values[subQuestionIndex]=item.value+''
+        console.log(this.selecteds)
+        await this.sleep(0.2)
+        this.onlyClick=true
+        if(this.selecteds.length===this.subQuestions.length&&!this.checkSelecteds(this.selecteds)){
+          this.answers[this.questionIndex]={
+            selected:this.selecteds,
+            value:this.values
+          }
+
+          console.log('emit next',this.selecteds.length===this.subQuestions.length&&!this.checkSelecteds(this.selecteds))
+          this.$emit('next',true)
+
+        }
+
+      }
+    }
+    components = {
+      myRadio: myRadio
+    }
   }
-}
 </script>
 

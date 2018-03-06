@@ -2,24 +2,72 @@
 
 </style>
 <template>
-     <slot name="radios"></slot>
+  <view>
+    <repeat
+      for="{{questions[questionIndex].options}}"
+      key="index"
+      index="index"
+      item="item"
+    >
+      <myRadio
+        :questionIndex.sync="questionIndex"
+        :item.sync="item"
+        :radioValue.sync="index"
+        :answers.sync="answers"
+        :index.sync="index"
+      >
+      </myRadio>
+    </repeat>
+  </view>
+
 </template>
 
 <script >
 import wepy from 'wepy'
 import Radio from '@/components/radio'
 export default class radioGroup extends wepy.component {
+  data={
+    canNext:true// 防止快速点击题目
+  }
   props={
-    value:{},
+   answers:{
+     type:Array,
+     default:[]
+   },
+    questions:{
+      type:Array,
+      default:[]
+    },
     questionIndex:{
       type:Number,
       default:0
     }
   }
   events={
-    'change':(item,index)=>{
-      this.$emit('next',item,index)
+    async selected (item,index){
+
+      if(!this.canNext) return
+      this.canNext=false
+      if(item){ // 增加hasTest字段，辅助判断是否显示下一题按钮，默认做过后显示,对应hasTest为false
+        this.answers[this.questionIndex]={hasTest:false,selected:item.index,value:item.value}
+      }
+      await this.sleep(0.2)
+
+      this.canNext=true
+      this.$emit('next',true)
     }
+  }
+  sleep(s,fn) {
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() =>{
+
+        resolve('sleep finshed')
+      }, s * 1000)
+    })
+  }
+  components={
+    myRadio:Radio
   }
 }
 </script>

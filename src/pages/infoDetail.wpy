@@ -1,6 +1,32 @@
+<style lang='scss'>
+  .title{
+    text-align:center;
+    font-size:30rpx;
+  }
+  .list__wrap{
+    padding:30rpx;
+   .p{
+     text-indent: 30rpx;
+   }
+    font-size:25rpx;
+  }
+</style>
 <template>
   <view>
-    详情页
+    <view class="title">
+      {{title}}
+    </view>
+    <view class="list__wrap" wx:for="{{list}}">
+      <view class="p">
+        地中海饮食泛指以蔬菜水果、鱼类、五谷杂粮、豆类和橄榄油为主的饮食风格，因希腊、西班牙和意大利南部等处于地中海沿岸的南欧各国多以此饮食结构为主，因此得名“地中海饮食”。权威的科学研究已证明“地中海饮食”可有效降低缺血性中风、认知功能障碍、痴呆、尤其阿尔茨海默病等一系列老年性脑病的发生[1][2]，该饮食结构能有效促进大脑健康。
+      </view>
+      <view class="p">
+        地中海饮食泛指以蔬菜水果、鱼类、五谷杂粮、豆类和橄榄油为主的饮食风格，因希腊、西班牙和意大利南部等处于地中海沿岸的南欧各国多以此饮食结构为主，因此得名“地中海饮食”。权威的科学研究已证明“地中海饮食”可有效降低缺血性中风、认知功能障碍、痴呆、尤其阿尔茨海默病等一系列老年性脑病的发生[1][2]，该饮食结构能有效促进大脑健康。
+      </view>
+      <view>
+        <image src="../assets/yingy.jpg"></image>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -9,49 +35,10 @@ import wepy from "wepy";
 
 export default class Home extends wepy.page {
   data = {
-    indicatorDots: true,
-    banner: [
-      {
-        src: "/assets/banner.png"
-      },
-      {
-        src: "/assets/banner.png"
-      }
-    ],
-    list:[
-      {
-        testText:'情绪测评',
-        imgSrc:'../assets/1.png'
-      },
-      {
-        testText:'情绪测评',
-        imgSrc:'../assets/2.png'
-      },
-      {
-        imgSrc:'../assets/3.png',
-        testText:'情绪测评'
-      },
-      {
-        imgSrc:'../assets/4.png',
-        testText:'情绪测评'
-      },
-      {
-        imgSrc:'../assets/5.png',
-        testText:'情绪测评'
-      },
-      {
-        imgSrc:'../assets/6.png',
-        testText:'情绪测评'
-      },
-      {
-        imgSrc:'../assets/7.png',
-        testText:'情绪测评'
-      },
-      {
-        imgSrc:'../assets/8.png',
-        testText:'情绪测评'
-      }
-    ]
+    title:'养老先养脑，养脑要吃好——之地中海饮食篇',
+    list:[{
+      text:'饮食摄取各种必需营养素是保障脑健康第一道关卡的“小卫士”，充分重视一日三餐的调养作用，对积极促进大脑健康有着重要的作用。本文将为您推荐具有科学性实践证明的健康饮食结构 “地中海饮食”。'
+    }]
   };
   onLoad (options) {
     console.log(options)
@@ -60,6 +47,4 @@ export default class Home extends wepy.page {
 }
 </script>
 
-<style lang='scss'>
 
-</style>

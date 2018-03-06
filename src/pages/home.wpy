@@ -12,7 +12,7 @@
     </view>
     <view class="list">
       <view class="list__item" wx:for="{{list}}">
-        <navigator url="/pages/emotion?from={{item.source}}" open-type="navigate">
+        <navigator url="/pages/{{item.to}}?from={{item.source}}" open-type="navigate">
           <image class="list__item__img" src="{{item.imgSrc}}"/>
           <view>
             <text class="list__item__title">{{item.testText}}</text>
@@ -26,19 +26,19 @@
       <view class="info__header">
         <text class="info__header__leftBar"></text>
         <text class="info__header__title">行业资讯</text>
-        <navigator url="" class="more" open-type="switchtab" hover-class="className">更多</navigator>
+        <navigator url="infoDetail?id=1" open-type="navigate" class="more" >更多</navigator>
       </view>
       <view class="info__content">
         <view class="info__con__item">
           <navigator url="infoDetail?id=1" open-type="navigate">
-            <view class="info__item__title">行业资讯</view>
-            <view class="info__item__indro">行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯</view>
+            <view class="info__item__title">养老先养脑，养脑要吃好——之地中海饮食篇</view>
+            <view class="info__item__indro">饮食摄取各种必需营养素是保障脑健康第一道关卡的“小卫士”，充分重视一日三餐的调养作用，</view>
           </navigator>
         </view>
         <view class="info__con__item">
           <navigator url="infoDetail?id=1" open-type="navigate" class="test__navigator">
-            <view class="info__item__title">行业资讯</view>
-            <view class="info__item__indro">行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯 行业资讯</view>
+            <view class="info__item__title">好睡眠促进大脑健康</view>
+            <view class="info__item__indro">随着年龄的增长，老年人群中普遍有睡眠质量下降的情况。然而睡眠的质量，尤其是深度睡眠的质量和总时长与我们未来大脑健康息息相关。</view>
             <view></view>
           </navigator>
         </view>
@@ -132,49 +132,56 @@
       indicatorDots: true,
       banner: [
         {
-          src: "/assets/banner1.png"
+          src: "/assets/banner1.jpg"
         },
         {
           src: "/assets/banner2.png"
         }
       ],
       list: [
-        {
+        { to:'emotion',
           source:'emotion',
           testText: '情绪测评',
           imgSrc: '../assets/1.png'
         },
         {
-          source:'emotion',
-          testText: '情绪测评',
+          to:'tcmsleep',
+          source:'tcmsleep',
+          testText: '睡眠测评',
           imgSrc: '../assets/2.png'
         },
         {
-          source:'emotion',
+          to:'syndrome',
+          source:'syndrome',
           imgSrc: '../assets/3.png',
-          testText: '情绪测评'
+          testText: '证候测评'
         },
         {
+          to:'',
           source:'emotion',
           imgSrc: '../assets/4.png',
           testText: '情绪测评'
         },
         {
+          to:'',
           source:'emotion',
           imgSrc: '../assets/5.png',
           testText: '情绪测评'
         },
         {
+          to:'',
           source:'emotion',
           imgSrc: '../assets/6.png',
           testText: '情绪测评'
         },
         {
+          to:'',
           source:'emotion',
           imgSrc: '../assets/7.png',
           testText: '情绪测评'
         },
         {
+          to:'',
           source:'emotion',
           imgSrc: '../assets/8.png',
           testText: '情绪测评'

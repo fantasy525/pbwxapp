@@ -1,0 +1,18 @@
+<style lang="scss">
+
+</style>
+<template>
+  <view>
+    <web-view src="https://mp.weixin.qq.com/">
+
+    </web-view>
+  </view>
+</template>
+
+<script >
+import wepy from 'wepy'
+export default class GameView extends wepy.page {
+
+}
+</script>
+

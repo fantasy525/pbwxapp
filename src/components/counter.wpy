@@ -16,6 +16,7 @@
 </style>
 <template>
   <view class="counter {{style}}">
+    counter--{{index}}
     <button @tap="plus" size="mini">  +  </button>
     <button @tap="minus" size="mini">  -  </button>
     <text class="count" :class="{red: num > 55, green: num < 45}"> {{num}} </text>
@@ -33,10 +34,16 @@
           return +v
         },
         default: 50
-      }
+      },
+      index:Number
     }
 
     data = {
+    }
+    watch = {
+      index (newValue, oldValue) {
+        console.log(`index value: ${oldValue} -> ${newValue}`)
+      }
     }
     events = {
       'index-broadcast': (...args) => {
